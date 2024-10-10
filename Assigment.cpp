@@ -21,9 +21,7 @@ public:
 
     virtual bool isWithinBoard(int boardWidth, int boardHeight) = 0;
 
-    virtual std::string getParameters() = 0;
-
-    virtual bool isEqual(const Figure& other) const = 0; // Added this line
+    virtual bool isEqual(const Figure& other) const = 0;
 };
 
 class Circle : public Figure {
@@ -34,6 +32,8 @@ public:
         : Figure(x_coordinate, y_coordinate), radius(radius_circle) {}
 
     void draw(std::vector<std::vector<char>>& grid) override {
+        const double DRAW_TOLERANCE = 0.5;
+        if (grid.empty() || grid[0].empty()) return;
         int grid_height = grid.size();
         int grid_width = grid[0].size();
         for (int i = 0; i < grid_height; i++) {
@@ -54,10 +54,6 @@ public:
         return (x + radius >= 0 && x - radius < boardWidth && y + radius >= 0 && y - radius < boardHeight);
     }
 
-    std::string getParameters() override {
-        return "Circle " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(radius);
-    }
-
     bool isEqual(const Figure& other) const override {
         const Circle* otherCircle = dynamic_cast<const Circle*>(&other);
         if (otherCircle == nullptr) return false;
@@ -74,6 +70,8 @@ public:
         : Figure(x_coordinate, y_coordinate), width(width_rect), height(height_rect) {}
 
     void draw(std::vector<std::vector<char>>& grid) override {
+        const double DRAW_TOLERANCE = 0.5;
+        if (grid.empty() || grid[0].empty()) return;
         int grid_height = grid.size();
         int grid_width = grid[0].size();
 
@@ -107,11 +105,6 @@ public:
         return (x < boardWidth && x + width > 0 && y < boardHeight && y + height > 0);
     }
 
-    std::string getParameters() override {
-        return "Rectangle " + std::to_string(x) + " " + std::to_string(y) + " "
-            + std::to_string(width) + " " + std::to_string(height);
-    }
-
     bool isEqual(const Figure& other) const override {
         const Rectangle* otherRect = dynamic_cast<const Rectangle*>(&other);
         if (otherRect == nullptr) return false;
@@ -128,6 +121,8 @@ public:
         : Figure(x_coordinate, y_coordinate), length(length_line), direction(dir) {}
 
     void draw(std::vector<std::vector<char>>& grid) override {
+        const double DRAW_TOLERANCE = 0.5;
+        if (grid.empty() || grid[0].empty()) return;
         int grid_height = grid.size();
         int grid_width = grid[0].size();
 
@@ -162,11 +157,6 @@ public:
         return false;
     }
 
-    std::string getParameters() override {
-        return "Line " + std::to_string(x) + " " + std::to_string(y) + " " +
-            std::to_string(length) + " " + direction;
-    }
-
     bool isEqual(const Figure& other) const override {
         const Line* otherLine = dynamic_cast<const Line*>(&other);
         if (otherLine == nullptr) return false;
@@ -182,6 +172,8 @@ public:
         : Figure(x_coordinate, y_coordinate), height(height_triangle) {}
 
     void draw(std::vector<std::vector<char>>& grid) override {
+        const double DRAW_TOLERANCE = 0.5;
+        if (grid.empty() || grid[0].empty()) return;
         int grid_height = grid.size();
         int grid_width = grid[0].size();
 
@@ -214,10 +206,6 @@ public:
 
     bool isWithinBoard(int boardWidth, int boardHeight) override {
         return (x - height + 1 < boardWidth && x + height - 1 >= 0 && y < boardHeight && y + height > 0);
-    }
-
-    std::string getParameters() override {
-        return "Triangle " + std::to_string(x) + " " + std::to_string(y) + " " + std::to_string(height);
     }
 
     bool isEqual(const Figure& other) const override {
